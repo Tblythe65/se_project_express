@@ -12,9 +12,6 @@ mongoose
   })
   .catch(console.error);
 
-app.use(express.json());
-app.use("/", mainRouter);
-
 // hardcoded id
 app.use((req, res, next) => {
   req.user = {
@@ -23,9 +20,8 @@ app.use((req, res, next) => {
   next();
 });
 
-module.exports.createClothingItem = (req, res) => {
-  console.log(req.user._id);
-};
+app.use(express.json());
+app.use("/", mainRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
