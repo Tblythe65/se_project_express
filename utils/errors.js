@@ -12,6 +12,4 @@ const ERROR_MESSAGES = {
   SERVER_ERROR: "An error has occurred on the server.",
 };
 
-//400 404 500
-
 module.exports = { ERROR_CODES, ERROR_MESSAGES };
