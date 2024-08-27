@@ -36,13 +36,81 @@ const deleteClothingItems = (req, res) => {
 
   ClothingItem.findByIdAndDelete(itemId)
     .orFail()
-    .then((item) => res.status(204).send({}))
+    .then(() => res.status(200).send({}))
     .catch((err) => {
       console.error(err);
+      if (err.name === "DocumentNotFoundError") {
+        return res
+          .status(ERROR_CODES.NOT_FOUND)
+          .send({ message: ERROR_MESSAGES.NOT_FOUND });
+      }
+      if (err.name === "CastError") {
+        return res
+          .status(ERROR_CODES.BAD_REQUEST)
+          .send({ message: ERROR_MESSAGES.BAD_REQUEST });
+      }
       return res
         .status(ERROR_CODES.SERVER_ERROR)
         .send({ message: ERROR_MESSAGES.SERVER_ERROR });
     });
 };
 
-module.exports = { getClothingItems, createClothingItems, deleteClothingItems };
+const likeItem = (req, res) => {
+  ClothingItem.findByIdAndUpdate(
+    req.params.itemId,
+    { $addToSet: { likes: req.user._id } },
+    { new: true }
+  )
+    .orFail()
+    .then((item) => res.send({ data: item }))
+    .catch((err) => {
+      console.error(err);
+      if (err.name === "DocumentNotFoundError") {
+        return res
+          .status(ERROR_CODES.NOT_FOUND)
+          .send({ message: ERROR_MESSAGES.NOT_FOUND });
+      }
+      if (err.name === "CastError") {
+        return res
+          .status(ERROR_CODES.BAD_REQUEST)
+          .send({ message: ERROR_MESSAGES.BAD_REQUEST });
+      }
+      return res
+        .status(ERROR_CODES.SERVER_ERROR)
+        .send({ message: ERROR_MESSAGES.SERVER_ERROR });
+    });
+};
+
+const dislikeItem = (req, res) => {
+  ClothingItem.findByIdAndUpdate(
+    req.params.itemId,
+    { $pull: { likes: req.user._id } },
+    { new: true }
+  )
+    .orFail()
+    .then((item) => res.send({ data: item }))
+    .catch((err) => {
+      console.error(err);
+      if (err.name === "DocumentNotFoundError") {
+        return res
+          .status(ERROR_CODES.NOT_FOUND)
+          .send({ message: ERROR_MESSAGES.NOT_FOUND });
+      }
+      if (err.name === "CastError") {
+        return res
+          .status(ERROR_CODES.BAD_REQUEST)
+          .send({ message: ERROR_MESSAGES.BAD_REQUEST });
+      }
+      return res
+        .status(ERROR_CODES.SERVER_ERROR)
+        .send({ message: ERROR_MESSAGES.SERVER_ERROR });
+    });
+};
+
+module.exports = {
+  getClothingItems,
+  createClothingItems,
+  deleteClothingItems,
+  likeItem,
+  dislikeItem,
+};
