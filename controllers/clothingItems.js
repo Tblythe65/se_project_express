@@ -3,7 +3,7 @@ const { ERROR_CODES, ERROR_MESSAGES } = require("../utils/errors");
 
 const getClothingItems = (req, res) => {
   ClothingItem.find({})
-    .then((items) => res.status(200).send(items))
+    .then((items) => res.send(items))
     .catch((err) => {
       console.error(err);
       return res
@@ -17,7 +17,7 @@ const createClothingItems = (req, res) => {
   const owner = req.user._id;
 
   ClothingItem.create({ name, weather, imageUrl, owner })
-    .then((item) => res.status(201).send(item))
+    .then((item) => res.send(item))
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
@@ -36,7 +36,7 @@ const deleteClothingItems = (req, res) => {
 
   ClothingItem.findByIdAndDelete(itemId)
     .orFail()
-    .then(() => res.status(200).send({}))
+    .then(() => res.send({ message: "Item successfully deleted" }))
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
