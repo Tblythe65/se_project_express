@@ -8,8 +8,8 @@ const clothingItemRouter = require("./clothingItmes");
 router.use("/users", userRouter);
 router.use("/items", clothingItemRouter);
 
-router.post("/signin", loginUser);
 router.post("/signup", createUser);
+router.post("/signin", loginUser);
 
 router.use((req, res) => {
   res.status(ERROR_CODES.NOT_FOUND).send({ message: ERROR_MESSAGES.NOT_FOUND });
