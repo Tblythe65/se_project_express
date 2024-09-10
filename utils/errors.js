@@ -4,6 +4,7 @@ const ERROR_CODES = {
   SERVER_ERROR: 500,
   CONFLICT: 409,
   UNAUTHORIZED: 401,
+  FORBIDDEN: 403,
 };
 
 const ERROR_MESSAGES = {
@@ -14,6 +15,7 @@ const ERROR_MESSAGES = {
   SERVER_ERROR: "An error has occurred on the server.",
   CONFLICT: "Email already in use",
   UNAUTHORIZED: "Invalid email or password",
+  FORBIDDEN: "Access Denied",
 };
 
 module.exports = { ERROR_CODES, ERROR_MESSAGES };

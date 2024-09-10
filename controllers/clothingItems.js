@@ -33,12 +33,26 @@ const createClothingItems = (req, res) => {
 
 const deleteClothingItems = (req, res) => {
   const { itemId } = req.params;
+  const userId = req.user._id;
 
-  ClothingItem.findByIdAndDelete(itemId)
+  ClothingItem.findById(itemId)
     .orFail()
+    .then((item) => {
+      if (item.owner.toString() !== userId) {
+        const error = new Error();
+        error.name = "AccessDenied";
+        throw error;
+      }
+      return ClothingItem.findByIdAndDelete(itemId);
+    })
     .then(() => res.send({ message: "Item successfully deleted" }))
     .catch((err) => {
       console.error(err);
+      if (err.name === "AccessDenied") {
+        return res
+          .status(ERROR_CODES.FORBIDDEN)
+          .send({ message: ERROR_MESSAGES.FORBIDDEN });
+      }
       if (err.name === "DocumentNotFoundError") {
         return res
           .status(ERROR_CODES.NOT_FOUND)
