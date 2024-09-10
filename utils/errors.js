@@ -2,6 +2,8 @@ const ERROR_CODES = {
   BAD_REQUEST: 400,
   NOT_FOUND: 404,
   SERVER_ERROR: 500,
+  CONFLICT: 409,
+  UNAUTHORIZED: 401,
 };
 
 const ERROR_MESSAGES = {
@@ -10,6 +12,8 @@ const ERROR_MESSAGES = {
   NOT_FOUND:
     "Tthere is no user or clothing item with the requested id, or the request was sent to a non-existent address.",
   SERVER_ERROR: "An error has occurred on the server.",
+  CONFLICT: "Email already in use",
+  UNAUTHORIZED: "Invalid email or password",
 };
 
 module.exports = { ERROR_CODES, ERROR_MESSAGES };
