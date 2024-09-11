@@ -19,6 +19,11 @@ const createUser = (req, res) => {
       .status(ERROR_CODES.BAD_REQUEST)
       .send({ message: "Invalid Email" });
   }
+  if (!validator.isURL(avatar)) {
+    return res
+      .status(ERROR_CODES.BAD_REQUEST)
+      .send({ message: "Invalid avatar format" });
+  }
 
   return User.findOne({ email })
     .then((existingUser) => {
