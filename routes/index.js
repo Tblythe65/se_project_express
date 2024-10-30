@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { ERROR_CODES, ERROR_MESSAGES } = require("../utils/errors");
+const { NotFoundError } = require("../utils/NotFoundError");
 const { createUser, loginUser } = require("../controllers/users");
 const {
   validateRegisterBody,
@@ -15,8 +15,8 @@ router.use("/items", clothingItemRouter);
 router.post("/signup", validateRegisterBody, createUser);
 router.post("/signin", validateLoginBody, loginUser);
 
-router.use((req, res) => {
-  res.status(ERROR_CODES.NOT_FOUND).send({ message: ERROR_MESSAGES.NOT_FOUND });
+router.use((req, res, next) => {
+  return next(new NotFoundError("Requested resource not found"));
 });
 
 module.exports = router;
